@@ -8,10 +8,10 @@ writer = Turtle(visible=False)
 aim = vector(5, 0)
 pacman = vector(-40, -80)
 ghosts = [
-    [vector(-180, 160), vector(5, 0)],
-    [vector(-180, -160), vector(0, 5)],
-    [vector(100, 160), vector(0, -5)],
-    [vector(100, -160), vector(-5, 0)],
+    [vector(-180, 20), vector(10, 0)], #Se cambio la direccion en la que sale este fantasma
+    [vector(-180, -160), vector(0, 10)], #Se cambio la direccion en el que sale este fantasma
+    [vector(100, 160), vector(0, -10)], #Se cambio la direccion en el que sale este fantasma
+    [vector(100, -160), vector(-10, 0)], #Se cambio la direccion en el que sale este fantasma
 ]
 tiles = [
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -72,8 +72,8 @@ def valid(point):
 
 def world():
     "Draw world using path."
-    bgcolor('black')
-    path.color('blue')
+    bgcolor('purple') #Cambia el tablero a morado
+    path.color('black') #Cambio el camino del tablero a negro
 
     for index in range(len(tiles)):
         tile = tiles[index]
@@ -137,6 +137,20 @@ def move():
 
     ontimer(move, 100)
 
+def move_ghosts(): 
+    # Esta variable hace que calcule la distancia entre el fantasma y pacman
+    for ghost in ghosts:
+        # Calcula la distancia del Pacman
+        distance = pacman - ghost[0]
+
+        # Si la distancia entre fantasma el fantasma y el pacman es menor a 20000 este va a seguirlo 
+        if abs(distance) < 20000:
+            ghost[1] = (distance / abs(distance)) * 30 #aumenta la velocidad del fantasma cuando vea al pacman
+
+        # Mueve al fantasma
+        ghost[0] += ghost[1]
+
+        
 def change(x, y):
     "Change pacman aim if valid."
     if valid(pacman + vector(x, y)):
